@@ -73,20 +73,16 @@ body {
 }
 
 .toggle-content {
-    max-height: 0;
+    height: 0;
     overflow: hidden;
     background: #f0f4f8;
     padding: 0 20px;
     border-radius: 0 0 10px 10px;
     margin-bottom: 10px;
-    opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+    transition: height 0.4s ease, padding 0.4s ease;
 }
-
-.toggle-content.show {
+.toggle.active + .toggle-content {
     padding: 15px 20px;
-    max-height: 500px; /* suficiente para respostas maiores */
-    opacity: 1;
 }
 
 /* Ajuste extra para telas muito pequenas */
@@ -178,19 +174,22 @@ toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
         const content = toggle.nextElementSibling;
 
-        // Fechar todos os outros toggles da mesma aba
+        // Fecha outros
         const parentSection = toggle.parentElement;
-        const allToggles = parentSection.querySelectorAll('.toggle');
-        allToggles.forEach(t => {
-            if(t !== toggle){
-                t.classList.remove('active');
-                t.nextElementSibling.classList.remove('show');
+        parentSection.querySelectorAll('.toggle-content').forEach(c => {
+            if(c !== content){
+                c.style.height = 0;
+                c.previousElementSibling.classList.remove('active');
             }
         });
 
-        // Alternar o toggle clicado
+        // Alterna o toggle clicado
         toggle.classList.toggle('active');
-        content.classList.toggle('show');
+        if(content.style.height && content.style.height !== '0px'){
+            content.style.height = 0;
+        } else {
+            content.style.height = content.scrollHeight + 'px';
+        }
     });
 });
 </script>
