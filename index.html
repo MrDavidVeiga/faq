@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>FAQ Moderno</title>
+<style>
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: transparent;
+    margin: 0;
+    padding: 40px 20px;
+    color: #333;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap; /* permite quebrar em telas pequenas */
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 5px;
+}
+
+.tab {
+    padding: 12px 25px;
+    background: #002B5A;
+    color: #fff;
+    border-radius: 13px 13px 0 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex: 1 1 auto; /* se ajusta ao espaço disponível */
+    text-align: center;
+}
+
+.tab.active {
+    background: #4c6c8d;
+}
+
+.faq-section {
+    max-width: 800px;
+    margin: 0 auto;
+    display: none;
+}
+
+.faq-section.active {
+    display: block;
+}
+
+.toggle {
+    background: #fff;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.toggle:hover {
+    transform: translateX(5px);
+}
+
+.toggle::after {
+    content: '+';
+    position: absolute;
+    right: 20px;
+    font-size: 18px;
+    transition: transform 0.3s;
+}
+
+.toggle.active::after {
+    transform: rotate(45deg);
+}
+
+.toggle-content {
+    max-height: 0;
+    overflow: hidden;
+    background: #f0f4f8;
+    padding: 0 20px;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 10px;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+}
+
+.toggle-content.show {
+    padding: 15px 20px;
+    max-height: 500px; /* suficiente para respostas maiores */
+    opacity: 1;
+}
+
+/* Ajuste extra para telas muito pequenas */
+@media (max-width: 400px) {
+    .tabs {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="tabs">
+    <div class="tab active" data-target="candidato">Candidato</div>
+    <div class="tab" data-target="empresa">Empresa</div>
+    <div class="tab" data-target="gerais">Gerais</div>
+</div>
+
+<!-- Abas FAQ -->
+<div id="candidato" class="faq-section active">
+    <div class="toggle">Como me inscrevo em uma vaga?</div>
+    <div class="toggle-content">Basta acessar a página de vagas, selecionar a oportunidade desejada e preencher o formulário com seus dados e currículo.</div>
+
+    <div class="toggle">Preciso pagar alguma taxa para participar do processo seletivo?</div>
+    <div class="toggle-content">Não. Nossos serviços para candidatos são 100% gratuitos.</div>
+
+    <div class="toggle">Como saberei se meu currículo foi recebido?</div>
+    <div class="toggle-content">Após o envio, você receberá uma confirmação por e-mail com a cópia de suas respostas.</div>
+
+    <div class="toggle">Posso me inscrever em mais de uma vaga?</div>
+    <div class="toggle-content">Sim! Você pode se candidatar a quantas vagas quiser, desde que atenda aos requisitos.</div>
+
+    <div class="toggle">Quanto tempo demora para eu ter uma resposta?</div>
+    <div class="toggle-content">O tempo pode variar conforme a empresa contratante. Mantemos os candidatos informados sobre cada etapa do processo.</div>
+</div>
+
+<div id="empresa" class="faq-section">
+    <div class="toggle">Como contratar os serviços de recrutamento e seleção?</div>
+    <div class="toggle-content">Entre em contato pelo nosso formulário de contato ou pelo WhatsApp disponível no site. Nossa equipe fará um diagnóstico da sua necessidade.</div>
+
+    <div class="toggle">Vocês atendem empresas de qualquer porte ou segmento?</div>
+    <div class="toggle-content">Sim. Adaptamos nossas soluções de RH para pequenas, médias e grandes empresas, em diversos setores.</div>
+
+    <div class="toggle">O que está incluso no processo de recrutamento e seleção?</div>
+    <div class="toggle-content">Desde a divulgação da vaga, triagem de currículos, entrevistas e testes, até a apresentação da shortlist de candidatos qualificados.</div>
+
+    <div class="toggle">Vocês também oferecem treinamentos e desenvolvimento?</div>
+    <div class="toggle-content">Sim! Criamos programas personalizados de treinamento, capacitação e desenvolvimento de lideranças.</div>
+
+    <div class="toggle">Qual o prazo médio para o preenchimento de uma vaga?</div>
+    <div class="toggle-content">Depende do nível da vaga e do perfil buscado, mas em média os processos levam de 15 a 30 dias.</div>
+</div>
+
+<div id="gerais" class="faq-section">
+    <div class="toggle">Onde vocês estão localizados?</div>
+    <div class="toggle-content">Atendemos de forma online e presencial em Garanhuns-PE.</div>
+
+    <div class="toggle">Como entro em contato com a equipe de RH?</div>
+    <div class="toggle-content">Você pode falar com a gente pelo formulário de contato do site, WhatsApp ou e-mail.</div>
+
+    <div class="toggle">Vocês oferecem consultoria completa de RH?</div>
+    <div class="toggle-content">Sim. Além de recrutamento e seleção, atuamos com treinamento, desenvolvimento e outras soluções sob medida para empresas.</div>
+</div>
+
+<script>
+// Troca de abas
+const tabs = document.querySelectorAll('.tab');
+const sections = document.querySelectorAll('.faq-section');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.target).classList.add('active');
+
+        // Ao trocar de aba, fechar todos os toggles
+        const togglesInSection = document.getElementById(tab.dataset.target).querySelectorAll('.toggle');
+        togglesInSection.forEach(t => t.classList.remove('active'));
+        togglesInSection.forEach(t => t.nextElementSibling.classList.remove('show'));
+    });
+});
+
+// Toggle das perguntas com acordeão exclusivo
+const toggles = document.querySelectorAll('.toggle');
+
+toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        const content = toggle.nextElementSibling;
+
+        // Fechar todos os outros toggles da mesma aba
+        const parentSection = toggle.parentElement;
+        const allToggles = parentSection.querySelectorAll('.toggle');
+        allToggles.forEach(t => {
+            if(t !== toggle){
+                t.classList.remove('active');
+                t.nextElementSibling.classList.remove('show');
+            }
+        });
+
+        // Alternar o toggle clicado
+        toggle.classList.toggle('active');
+        content.classList.toggle('show');
+    });
+});
+</script>
+
+</body>
+</html>
