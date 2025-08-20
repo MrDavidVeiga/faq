@@ -12,14 +12,14 @@ body {
     color: #333;
 }
 
+/* Abas */
 .tabs {
     display: flex;
-    flex-wrap: wrap; /* permite quebrar em telas pequenas */
+    flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 30px;
     gap: 5px;
 }
-
 .tab {
     padding: 12px 25px;
     background: #002B5A;
@@ -27,26 +27,27 @@ body {
     border-radius: 13px 13px 0 0;
     cursor: pointer;
     transition: background 0.3s;
-    flex: 1 1 auto; /* se ajusta ao espaço disponível */
+    flex: 1 1 auto;
     text-align: center;
 }
-
 .tab.active {
     background: #4c6c8d;
 }
 
+/* Seções FAQ */
 .faq-section {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     transition: max-height 0.6s ease, opacity 0.6s ease;
 }
-
 .faq-section.active {
-    max-height: 2000px; /* suficiente para qualquer seção */
+    max-height: 2000px; /* ajusta conforme necessário */
     opacity: 1;
+    transition: max-height 0.6s ease, opacity 0.6s ease;
 }
 
+/* Toggle */
 .toggle {
     background: #fff;
     padding: 15px 20px;
@@ -55,39 +56,42 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     cursor: pointer;
     position: relative;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease-in-out;
 }
-
 .toggle:hover {
     transform: translateX(5px);
 }
-
 .toggle::after {
     content: '+';
     position: absolute;
     right: 20px;
     font-size: 18px;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease-in-out;
 }
-
 .toggle.active::after {
     transform: rotate(45deg);
 }
 
+/* Toggle Content - animação deslize + fade */
 .toggle-content {
-    height: 0;
+    max-height: 0;
     overflow: hidden;
     background: #f0f4f8;
     padding: 0 20px;
     border-radius: 0 0 10px 10px;
     margin-bottom: 10px;
-    transition: height 0.4s ease, padding 0.4s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: transform 0.5s ease, opacity 0.5s ease, padding 0.5s ease, max-height 0.5s ease;
 }
-.toggle.active + .toggle-content {
+.toggle-content.show {
     padding: 15px 20px;
+    max-height: 500px; /* ajusta conforme conteúdo */
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* Ajuste extra para telas muito pequenas */
+/* Mobile */
 @media (max-width: 400px) {
     .tabs {
         flex-direction: column;
@@ -97,13 +101,14 @@ body {
 </head>
 <body>
 
+<!-- Abas -->
 <div class="tabs">
     <div class="tab active" data-target="candidato">Candidato</div>
     <div class="tab" data-target="empresa">Empresa</div>
     <div class="tab" data-target="gerais">Gerais</div>
 </div>
 
-<!-- Abas FAQ -->
+<!-- FAQ Seções -->
 <div id="candidato" class="faq-section active">
     <div class="toggle">Como me inscrevo em uma vaga?</div>
     <div class="toggle-content">Basta acessar a página de vagas, selecionar a oportunidade desejada e preencher o formulário com seus dados e currículo.</div>
@@ -162,7 +167,7 @@ tabs.forEach(tab => {
         tab.classList.add('active');
         document.getElementById(tab.dataset.target).classList.add('active');
 
-        // Ao trocar de aba, fechar todos os toggles
+        // Fechar todos os toggles da nova aba
         const togglesInSection = document.getElementById(tab.dataset.target).querySelectorAll('.toggle');
         togglesInSection.forEach(t => t.classList.remove('active'));
         togglesInSection.forEach(t => t.nextElementSibling.classList.remove('show'));
@@ -171,31 +176,26 @@ tabs.forEach(tab => {
 
 // Toggle das perguntas com acordeão exclusivo
 const toggles = document.querySelectorAll('.toggle');
-
 toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
         const content = toggle.nextElementSibling;
 
-        // Fecha outros
+        // Fecha todos os outros toggles da mesma aba
         const parentSection = toggle.parentElement;
-        parentSection.querySelectorAll('.toggle-content').forEach(c => {
-            if(c !== content){
-                c.style.height = 0;
-                c.previousElementSibling.classList.remove('active');
+        const allToggles = parentSection.querySelectorAll('.toggle');
+        allToggles.forEach(t => {
+            if(t !== toggle){
+                t.classList.remove('active');
+                t.nextElementSibling.classList.remove('show');
             }
         });
 
         // Alterna o toggle clicado
         toggle.classList.toggle('active');
-        if(content.style.height && content.style.height !== '0px'){
-            content.style.height = 0;
-        } else {
-            content.style.height = content.scrollHeight + 'px';
-        }
+        content.classList.toggle('show');
     });
 });
 </script>
 
 </body>
 </html>
-
