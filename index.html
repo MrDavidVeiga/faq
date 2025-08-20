@@ -12,13 +12,12 @@ body {
     color: #333;
 }
 
-/* Abas */
 .tabs {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* permite quebrar em telas pequenas */
     justify-content: center;
-    gap: 5px;
     margin-bottom: 30px;
+    gap: 5px;
 }
 
 .tab {
@@ -28,7 +27,7 @@ body {
     border-radius: 13px 13px 0 0;
     cursor: pointer;
     transition: background 0.3s;
-    flex: 1 1 auto;
+    flex: 1 1 auto; /* se ajusta ao espaço disponível */
     text-align: center;
 }
 
@@ -36,7 +35,6 @@ body {
     background: #4c6c8d;
 }
 
-/* Seções FAQ */
 .faq-section {
     max-width: 800px;
     margin: 0 auto;
@@ -47,7 +45,6 @@ body {
     display: block;
 }
 
-/* Toggles */
 .toggle {
     background: #fff;
     padding: 15px 20px;
@@ -76,23 +73,19 @@ body {
 }
 
 .toggle-content {
-    max-height: 0;
+    height: 0;
     overflow: hidden;
     background: #f0f4f8;
     padding: 0 20px;
     border-radius: 0 0 10px 10px;
     margin-bottom: 10px;
-    opacity: 0;
-    transition: max-height 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
+    transition: height 0.4s ease, padding 0.4s ease;
 }
-
-.toggle-content.show {
+.toggle.active + .toggle-content {
     padding: 15px 20px;
-    max-height: 500px;
-    opacity: 1;
 }
 
-/* Mobile */
+/* Ajuste extra para telas muito pequenas */
 @media (max-width: 400px) {
     .tabs {
         flex-direction: column;
@@ -174,25 +167,29 @@ tabs.forEach(tab => {
     });
 });
 
-// Toggle das perguntas
+// Toggle das perguntas com acordeão exclusivo
 const toggles = document.querySelectorAll('.toggle');
 
 toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
         const content = toggle.nextElementSibling;
 
-        // Fechar os outros toggles na mesma aba
+        // Fecha outros
         const parentSection = toggle.parentElement;
-        parentSection.querySelectorAll('.toggle').forEach(t => {
-            if(t !== toggle) {
-                t.classList.remove('active');
-                t.nextElementSibling.classList.remove('show');
+        parentSection.querySelectorAll('.toggle-content').forEach(c => {
+            if(c !== content){
+                c.style.height = 0;
+                c.previousElementSibling.classList.remove('active');
             }
         });
 
         // Alterna o toggle clicado
         toggle.classList.toggle('active');
-        content.classList.toggle('show');
+        if(content.style.height && content.style.height !== '0px'){
+            content.style.height = 0;
+        } else {
+            content.style.height = content.scrollHeight + 'px';
+        }
     });
 });
 </script>
