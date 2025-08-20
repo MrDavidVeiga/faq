@@ -36,13 +36,15 @@ body {
 }
 
 .faq-section {
-    max-width: 800px;
-    margin: 0 auto;
-    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.6s ease;
 }
 
 .faq-section.active {
-    display: block;
+    max-height: 2000px; /* suficiente para qualquer seção */
+    opacity: 1;
 }
 
 .toggle {
@@ -196,3 +198,4 @@ toggles.forEach(toggle => {
 
 </body>
 </html>
+
